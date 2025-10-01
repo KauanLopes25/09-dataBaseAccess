@@ -25,3 +25,27 @@ Retorna um novo array com todos os elementos que satisfazem a condição.
 ******************************** BIBLIOTECAS UTILIZADAS *************************************
 
 ********************************************************************************************/
+
+// Retorna uma lista de todos os filmes do banco de dados
+async function getSelectAllMovies() {
+
+}
+// Retorna um filme filtrando pelo ID do banco de dados
+async function getSelectByIdMovie(id) {
+
+}
+
+// Insere um filme novo no banco de dados
+async function setInsertMovie() {
+
+}
+
+// Altera um filme pelo ID no banco de dados
+async function setUpdateMovie(id) {
+
+}
+
+// Excluir um filme pelo ID no banco de dados
+async function setDeleteMovie(id) {
+
+}
