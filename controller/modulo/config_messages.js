@@ -13,18 +13,31 @@ requisições e respostas para a tabela Filme.
 // Comentário em linha
 
 /******************************** MENSAGENS PADRONIZADAS *************************************/
+const data_atual = new Date()
+
 const MESSAGE_HEADER = {
-    API_description: '',
+    api_description: '',
     development: 'Kauan Lopes Pereira',
-    Status: undefined,
-    Status_code: undefined,
-    Date_Request: undefined
+    status: Boolean,
+    status_code: Number,
+    date_request: data_atual.getTimezoneOffset(),
+    itens: {}
+
 }
 
 
 /********************************** MENSAGENS DE SUCESSO *************************************/
 
-
+const MESSAGE_REQUEST_SUCCESS = {
+    status: true,
+    status_code: 200,
+    message: 'Requisição bem sucedida!'
+}
 
 /************************************ MENSAGENS DE ERRO **************************************/
 
+
+module.exports = {
+    MESSAGE_HEADER,
+    MESSAGE_REQUEST_SUCCESS
+}
