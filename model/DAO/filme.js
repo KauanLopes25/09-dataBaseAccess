@@ -46,7 +46,7 @@ BANCO NÃO RELACIONAL
 ********************************************************************************************/
 
 // Import da dependência do Prisma que permite a execução de script SQL no BD
-const { PrismaClient } = require('@prisma/client')
+const { PrismaClient } = require('../../generated/prisma')
 
 // Cria um novo objeto baseado na classe do PrismaClient
 const prisma = new PrismaClient()
@@ -59,7 +59,7 @@ async function getSelectAllMovies() {
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
 
-        if (result.length > 0)
+        if (result.lenght > 0)
             return result
         else
             return false
