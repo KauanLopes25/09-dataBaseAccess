@@ -29,6 +29,10 @@ Injection
 BANCO RELACIONAL
 * Sequelize -> Foi Utilizado em muitos projetos desde o inicio do node.
 * Prisma -> É uma dependencia atual que trabalha com BD  (MYSQL, PostgreSQL, SQL Server), (SQL ou ORM).
+    npm install prisma --save           -> Instalar o prisma (Conexão com o Database).
+    npm install @prisma/client --save   -> Instalar o cliente do prisma (Executar scripts SQL no BD).
+    npx prisma init                     -> Prompt de comando para inicializar o prisma.
+
 * Knex -> É uma dependencia para trabalhar com BD (MYSQL)
 BANCO NÃO RELACIONAL
 * Mongoose -> É uma dependencia para o Mongo DB (Não relacional).
