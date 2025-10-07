@@ -32,7 +32,11 @@ BANCO RELACIONAL
     npm install prisma --save           -> Instalar o prisma (Conexão com o Database).
     npm install @prisma/client --save   -> Instalar o cliente do prisma (Executar scripts SQL no BD).
     npx prisma init                     -> Prompt de comando para inicializar o prisma.
-
+    npx prisma migrate dev              -> Realiza o sincronismo entre o prisma e o DB (CUIDADO,
+                                           neste processo você poderá perder dados reais do DB, 
+                                           pois ele pega e cria tabelas programadas no ORM schema.prisma)
+    npx prisma generate                 -> Apenas realiza o sincronismo entre o prisma e o DB, geralmente
+                                           usamos para rodar o projeto em um PC novo                                      
 * Knex -> É uma dependencia para trabalhar com BD (MYSQL)
 BANCO NÃO RELACIONAL
 * Mongoose -> É uma dependencia para o Mongo DB (Não relacional).
