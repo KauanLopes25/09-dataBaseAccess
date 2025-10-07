@@ -21,7 +21,6 @@ requisições e respostas para a tabela Filme.
 ********************************************************************************************/
 // Importação do arquivo model da tbl_filme
 const filmeDAO = require('../../model/DAO/filme.js')
-
 // Mostra todos os filmes do banco
 async function listarFilme(){}
 // Retorna um filme correspondente pelo id
