@@ -21,15 +21,33 @@ requisições e respostas para a tabela Filme.
 ********************************************************************************************/
 // Importação do arquivo model da tbl_filme
 const filmeDAO = require('../../model/DAO/filme.js')
+const MESSAGES = require('../modulo/config_messages.js')
 // Mostra todos os filmes do banco
-async function listarFilme(){}
+async function listarFilme() {
+    // Chama a função do DAO para retornar a lista de filmes do BD
+    let resultFilmes = await filmeDAO.getSelectAllMovies()
+
+    if (resultFilmes.leght > 0) {
+        MESSAGES.MESSAGE_HEADER.status = MESSAGES.MESSAGE_REQUEST_SUCCESS.status
+        MESSAGES.MESSAGE_HEADER.status_code = MESSAGES.MESSAGE_REQUEST_SUCCESS.status_code
+        MESSAGES.MESSAGE_HEADER.items.filmes = resultFilmes
+
+        return MESSAGES.MESSAGE_HEADER
+    } else {
+        MESSAGES
+    }
+}
 // Retorna um filme correspondente pelo id
-async function buscarFilmeId(id){}
+async function buscarFilmeId(id) { }
 // Inseri um filme
-async function inserirFilme(filme) {}
+async function inserirFilme(filme) { }
 // Atualizar um filme buscando pelo ID
-async function atualizarFilme(filme, id) {}
+async function atualizarFilme(filme, id) { }
 // Exclui um filme pelo ID
 async function excluirFilme(id) {
-    
+
+}
+
+module.exports = {
+    listarFilme
 }
