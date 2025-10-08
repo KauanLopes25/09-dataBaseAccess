@@ -16,11 +16,11 @@ requisições e respostas para a tabela Filme.
 const data_atual = new Date()
 
 const MESSAGE_HEADER = {
-    api_description: '',
+    api_description: 'API para manipular dados de Filmes',
     development: 'Kauan Lopes Pereira',
     status: Boolean,
     status_code: Number,
-    date_request: data_atual.getTimezoneOffset(),
+    date_request: data_atual,
     itens: {}
 
 }

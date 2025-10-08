@@ -44,7 +44,6 @@ app.use((request, response, next)=>{
 app.get('/v1/locadora/filme', cors(), async function (request, response){
     // Chama a função para listar os filmes do BD
     let filme = await controllerFilme.listarFilme()
-    console.log(filme)
     response.status(filme.status_code)
     response.json(filme)
 })
