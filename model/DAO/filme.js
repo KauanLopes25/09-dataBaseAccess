@@ -55,21 +55,23 @@ const prisma = new PrismaClient()
 async function getSelectAllMovies() {
     try {
         // Variavel com o comando sql para buscar toda a tabela de filme
-        let sql = `select * from tbl_filme order by id desc`
+        let sql = `select * from tbl_filme order by filme_id desc`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
 
-        if (result.lenght > 0)
+        if (result.length > 0)
             return result
         else
             return false
 
 
     } catch (error) {
+        console.log(error)
         return false
     }
 
 }
+
 // Retorna um filme filtrando pelo ID do banco de dados
 async function getSelectByIdMovie(id) {
 

@@ -40,16 +40,16 @@ app.use((request, response, next)=>{
     app.use(cors()) // Carrega as configurações no Cors da API
     next() // Próximo, carregar os proximos endpoints
 })
+// ENDPOINT para a rota de filme
+app.get('/v1/locadora/filme', cors(), async function (request, response){
+    // Chama a função para listar os filmes do BD
+    let filme = await controllerFilme.listarFilme()
+    console.log(filme)
+    response.status(filme.status_code)
+    response.json(filme)
+})
+
 // Mensagem de operação da API
 app.listen(PORT, function(){
     console.log('API aguardando requisições...')
-})
-
-
-// ENDPOINT para a rota de filme
-app.get('v1/locadora/filme', cors(), async function (request, response){
-    // Chama a função para listar os filmes do BD
-    let filme = await controllerFilme.listarFilme()
-    response.status(filme.status_code)
-    response.json(filme)
 })
