@@ -52,11 +52,17 @@ const ERROR_INTERNAL_SERVER_MODEL = {
     status_code: 500,
     message: 'Não foi possivel processar a requisição devido a erros internos no servidor (MODELAGEM DE DADOS)!'
 }
+const ERROR_REQUIRED_FIELDS = {
+    status: false,
+    status_code: 400,
+    message: 'Não foi possivel processar a requisição pois existem campos obrigatórios que devem ser encaminhados e atendidos conforme documentação!'
+}
 
 module.exports = {
     DEFAULT_HEADER,
     SUCCESS_REQUEST,
     ERROR_NOT_FOUND,
     ERROR_INTERNAL_SERVER_CONTROLLER,
-    ERROR_INTERNAL_SERVER_MODEL
+    ERROR_INTERNAL_SERVER_MODEL,
+    ERROR_REQUIRED_FIELDS
 }

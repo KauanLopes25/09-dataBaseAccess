@@ -50,7 +50,38 @@ async function listarFilme() {
 
 
 // Retorna um filme correspondente pelo id
-async function buscarFilmeId(id) { }
+async function buscarFilmeId(id) {
+    try {
+        // Criando copia do objeto mensagens
+        let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+        if (!isNaN(id)) {
+            let resultFilmes = await filmeDAO.getSelectByIdMovie(Number(id))
+
+            if (resultFilmes) {
+                if (resultFilmes.length > 0) {
+                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
+                    MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.MESSAGES
+                    MESSAGES.DEFAULT_HEADER.itens.filme = resultFilmes
+                    
+                    return MESSAGES.DEFAULT_HEADER // 200
+                    
+                } else {
+                    return MESSAGES.ERROR_NOT_FOUND // 404
+                }
+                
+            } else {
+                return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
+            }
+        } else {
+            return MESSAGES.ERROR_REQUIRED_FIELDS // 400
+        }
+
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
+}
 // Inseri um filme
 async function inserirFilme(filme) { }
 // Atualizar um filme buscando pelo ID
@@ -61,5 +92,6 @@ async function excluirFilme(id) {
 }
 
 module.exports = {
-    listarFilme
+    listarFilme,
+    buscarFilmeId
 }
