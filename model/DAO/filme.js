@@ -58,7 +58,7 @@ async function getSelectAllMovies() {
         let sql = `select * from tbl_filme order by filme_id desc`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
-        if (result.length > 0)
+        if (Array.isArray(result))
             return result
         
         else

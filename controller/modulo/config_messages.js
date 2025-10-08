@@ -15,12 +15,12 @@ requisições e respostas para a tabela Filme.
 /******************************** MENSAGENS PADRONIZADAS *************************************/
 const data_atual = new Date()
 
-const MESSAGE_HEADER = {
+const DEFAULT_HEADER = {
     api_description: 'API para manipular dados de Filmes',
     development: 'Kauan Lopes Pereira',
     status: Boolean,
     status_code: Number,
-    date_request: data_atual,
+    date_request: data_atual.toString(),
     itens: {}
 
 }
@@ -28,7 +28,7 @@ const MESSAGE_HEADER = {
 
 /********************************** MENSAGENS DE SUCESSO *************************************/
 
-const MESSAGE_REQUEST_SUCCESS = {
+const SUCCESS_REQUEST = {
     status: true,
     status_code: 200,
     message: 'Requisição bem sucedida!'
@@ -36,8 +36,27 @@ const MESSAGE_REQUEST_SUCCESS = {
 
 /************************************ MENSAGENS DE ERRO **************************************/
 
+const ERROR_NOT_FOUND = {
+    status: false,
+    status_code: 404,
+    message: 'Não foram encontrados dados de retorno!'
+}
+
+const ERROR_INTERNAL_SERVER_CONTROLLER = {
+    status: false,
+    status_code: 500,
+    message: 'Não foi possivel processar a requisição devido a erros internos no servidor (CONTROLLER)!'
+}
+const ERROR_INTERNAL_SERVER_MODEL = {
+    status: false,
+    status_code: 500,
+    message: 'Não foi possivel processar a requisição devido a erros internos no servidor (MODELAGEM DE DADOS)!'
+}
 
 module.exports = {
-    MESSAGE_HEADER,
-    MESSAGE_REQUEST_SUCCESS
+    DEFAULT_HEADER,
+    SUCCESS_REQUEST,
+    ERROR_NOT_FOUND,
+    ERROR_INTERNAL_SERVER_CONTROLLER,
+    ERROR_INTERNAL_SERVER_MODEL
 }
