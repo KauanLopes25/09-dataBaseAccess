@@ -40,13 +40,24 @@ app.use((request, response, next)=>{
     app.use(cors()) // Carrega as configurações no Cors da API
     next() // Próximo, carregar os proximos endpoints
 })
-// ENDPOINT para a rota de filme
+// ENDPOINT's
+// 1°
 app.get('/v1/locadora/filme', cors(), async function (request, response){
     // Chama a função para listar os filmes do BD
     let filme = await controllerFilme.listarFilme()
     response.status(filme.status_code)
     response.json(filme)
 })
+// 2°
+app.get('/v1/locadora/filme/:id', cors(), async function (request, response){
+    // Recebe o ID encaminhado via parametro na requisição
+    let idFilme = request.params.id
+    // Chama a função de buscar filme por ID
+    let filme = await controllerFilme.buscarFilmeId(idFilme)
+    response.status(filme.status_code)
+    response.json(filme)
+})
+
 
 // Mensagem de operação da API
 app.listen(PORT, function(){

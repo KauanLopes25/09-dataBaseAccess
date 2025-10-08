@@ -24,9 +24,10 @@ const filmeDAO = require('../../model/DAO/filme.js')
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
 // Mostra todos os filmes do banco
 async function listarFilme() {
+    // Criando copia do objeto mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
     try {
-        // Criando copia do objeto mensagens
-        let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
         // Chama a função do DAO para retornar a lista de filmes do BD
         let resultFilmes = await filmeDAO.getSelectAllMovies()
         if (resultFilmes) {
@@ -51,10 +52,10 @@ async function listarFilme() {
 
 // Retorna um filme correspondente pelo id
 async function buscarFilmeId(id) {
-    try {
-        // Criando copia do objeto mensagens
-        let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+    // Criando copia do objeto mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
+    try {
         if (!isNaN(id)) {
             let resultFilmes = await filmeDAO.getSelectByIdMovie(Number(id))
 
@@ -64,13 +65,13 @@ async function buscarFilmeId(id) {
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                     MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.MESSAGES
                     MESSAGES.DEFAULT_HEADER.itens.filme = resultFilmes
-                    
+
                     return MESSAGES.DEFAULT_HEADER // 200
-                    
+
                 } else {
                     return MESSAGES.ERROR_NOT_FOUND // 404
                 }
-                
+
             } else {
                 return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
             }
