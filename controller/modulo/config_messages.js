@@ -33,6 +33,11 @@ const SUCCESS_REQUEST = {
     status_code: 200,
     message: 'Requisição bem sucedida!'
 }
+const SUCCESS_CREATED_ITEM = {
+    status: true,
+    status_code: 201,
+    message: 'Item criado com sucesso!'
+}
 
 /************************************ MENSAGENS DE ERRO **************************************/
 
