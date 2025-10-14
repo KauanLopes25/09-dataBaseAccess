@@ -61,14 +61,13 @@ app.get('/v1/locadora/filme/:id', cors(), async function (request, response){
     response.json(filme)
 })
 // 3°
-app.post('/v1/locadora/filme/', cors(), async function (request, response){
+app.post('/v1/locadora/filme/', cors(), bodyParserJSON, async function (request, response){
     // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
     let dadosBody = request.body
     let contentType = request.headers['content-type']
-
-
     // Chama a função de inserir o novo filme, encaminha os dados e o content-type
     let filme = await controllerFilme.inserirFilme(dadosBody, contentType)
+    
     response.status(filme.status_code)
     response.json(filme)
 })

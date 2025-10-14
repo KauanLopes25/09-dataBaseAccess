@@ -83,10 +83,9 @@ async function buscarFilmeId(id) {
     }
 }
 // Inseri um filme
-async function inserirFilme(filme) {
+async function inserirFilme(filme, contentType) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
-
     try {
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
             // Validações de todas as entradas de dados
@@ -94,7 +93,7 @@ async function inserirFilme(filme) {
                 MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Nome incorreto]'
                 return MESSAGES.ERROR_REQUIRED_FIELDS
             }
-            else if (filme.sinopse != undefined) {
+            else if (filme.sinopse == undefined) {
                 MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Sinopse incorreta]'
                 return MESSAGES.ERROR_REQUIRED_FIELDS
             }
@@ -127,6 +126,7 @@ async function inserirFilme(filme) {
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
                     MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message
+                    MESSAGES.DEFAULT_HEADER.itens = null
 
                     return MESSAGES.DEFAULT_HEADER // 201
                 } else {
@@ -137,6 +137,7 @@ async function inserirFilme(filme) {
             return MESSAGES.ERROR_CONTENT_TYPE // 415
         }
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 

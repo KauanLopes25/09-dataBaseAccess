@@ -107,10 +107,10 @@ async function setInsertMovie(filme) {
         );`
         let result = await prisma.$executeRawUnsafe(sql)
         if(result){
-            console.log (result)
+            
             return true
         } else {
-            console.log (result)
+            
             return false
         }
         
