@@ -150,5 +150,6 @@ async function excluirFilme(id) {
 
 module.exports = {
     listarFilme,
-    buscarFilmeId
+    buscarFilmeId,
+    inserirFilme
 }

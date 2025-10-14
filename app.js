@@ -27,6 +27,9 @@ const bodyParser = require('body-parser')
 // Import das controllers
 const controllerFilme = require('./controller/filme/controller_filme.js')
 
+// Criando um objeto especialista no formato JSON para receber dados via POST e PUT
+const bodyParserJSON = bodyParser.json()
+
 // Retorna a porta do servidor local ou colocamos uma porta local
 const PORT = process.PORT || 8080
 // Criando uma instancia de uma classe do express
@@ -54,6 +57,18 @@ app.get('/v1/locadora/filme/:id', cors(), async function (request, response){
     let idFilme = request.params.id
     // Chama a função de buscar filme por ID
     let filme = await controllerFilme.buscarFilmeId(idFilme)
+    response.status(filme.status_code)
+    response.json(filme)
+})
+// 3°
+app.post('/v1/locadora/filme/', cors(), async function (request, response){
+    // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
+    let dadosBody = request.body
+    let contentType = request.headers['content-type']
+
+
+    // Chama a função de inserir o novo filme, encaminha os dados e o content-type
+    let filme = await controllerFilme.inserirFilme(dadosBody, contentType)
     response.status(filme.status_code)
     response.json(filme)
 })
