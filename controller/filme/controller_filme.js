@@ -49,14 +49,13 @@ async function listarFilme() {
     }
 }
 
-
 // Retorna um filme correspondente pelo id
 async function buscarFilmeId(id) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        if (!isNaN(id)) {
+        if (!isNaN(id) && id != null && id > 0) {
             let resultFilmes = await filmeDAO.getSelectByIdMovie(Number(id))
 
             if (resultFilmes) {
