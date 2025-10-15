@@ -43,6 +43,11 @@ const SUCCESS_UPDATED_ITEM = {
     status_code: 200,
     message: 'Item atualizado com sucesso!'
 }
+const SUCCESS_DELETE_ITEM = {
+    status: true,
+    status_code: 204,
+    message: 'Item deletado com sucesso!'
+}
 
 /************************************ MENSAGENS DE ERRO **************************************/
 
