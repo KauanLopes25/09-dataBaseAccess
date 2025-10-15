@@ -125,7 +125,8 @@ async function setUpdateMovie(filme) {
         let sql = ` UPDATE tbl_filme
                     SET nome = '${filme.nome}', 
                     sinopse = '${filme.sinopse}', 
-                    data_lancamento = ${filme.data_lancamento},
+                    data_lancamento = '${filme.data_lancamento}',
+                    duracao = '${filme.duracao}',
                     orcamento = '${filme.orcamento}',
                     trailer = '${filme.trailer}',
                     capa = '${filme.capa}'

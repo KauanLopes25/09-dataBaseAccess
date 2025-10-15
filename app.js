@@ -74,6 +74,20 @@ app.post('/v1/locadora/filme/', cors(), bodyParserJSON, async function (request,
     response.json(filme)
     console.log('ENDPOINT 3° - Requisitado')
 })
+// 4°
+app.put('/v1/locadora/filme/:id', cors(), bodyParserJSON, async function (request, response){
+    // Recebe o ID encaminhado via parametro na requisição
+    let idFilme = request.params.id
+    // Recebe os dados do body da requisição (Se você utilizar o bodyParser, é obrigatório ter no endPoint)
+    let dadosBody = request.body
+    let contentType = request.headers['content-type']
+    // Chama a função de inserir o novo filme, encaminha os dados e o content-type
+    let filme = await controllerFilme.atualizarFilme(dadosBody, contentType, idFilme)
+    
+    response.status(filme.status_code)
+    response.json(filme)
+    console.log('ENDPOINT 4° - Requisitado')
+})
 
 
 // Mensagem de operação da API

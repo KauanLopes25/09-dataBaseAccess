@@ -119,7 +119,7 @@ async function inserirFilme(filme, contentType) {
 
 }
 // Atualizar um filme buscando pelo ID
-async function atualizarFilme(id, filme, contentType) {
+async function atualizarFilme(filme, contentType, id) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
@@ -139,8 +139,8 @@ async function atualizarFilme(id, filme, contentType) {
 
                     // Processamento
                     // Chama a função para atualizar um filme no BD
-                    let resultfilme = await filmeDAO.setUpdateMovieMovie(filme)
-
+                    let resultfilme = await filmeDAO.setUpdateMovie(filme)
+                    console.log(resultfilme)
                     if (resultfilme) {
                         MESSAGES.DEFAULT_HEADER.status           =  MESSAGES.SUCCESS_UPDATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code      =  MESSAGES.SUCCESS_UPDATED_ITEM.status_code
