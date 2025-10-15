@@ -149,13 +149,13 @@ async function setUpdateMovie(filme) {
 async function setDeleteMovie(id) {
     try {
         let sql = `DELETE FROM tbl_filme
-                    WHERE id = ${id};`
+                    WHERE filme_id = ${id};`
+
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
 
             return true
         } else {
-
             return false
         }
 

@@ -45,7 +45,7 @@ const SUCCESS_UPDATED_ITEM = {
 }
 const SUCCESS_DELETE_ITEM = {
     status: true,
-    status_code: 204,
+    status_code: 200,
     message: 'Item deletado com sucesso!'
 }
 
@@ -83,6 +83,7 @@ module.exports = {
     SUCCESS_REQUEST,
     SUCCESS_CREATED_ITEM,
     SUCCESS_UPDATED_ITEM,
+    SUCCESS_DELETE_ITEM,
     ERROR_NOT_FOUND,
     ERROR_INTERNAL_SERVER_CONTROLLER,
     ERROR_INTERNAL_SERVER_MODEL,

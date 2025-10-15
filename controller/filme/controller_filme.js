@@ -140,7 +140,6 @@ async function atualizarFilme(filme, contentType, id) {
                     // Processamento
                     // Chama a função para atualizar um filme no BD
                     let resultfilme = await filmeDAO.setUpdateMovie(filme)
-                    console.log(resultfilme)
                     if (resultfilme) {
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATED_ITEM.status_code
@@ -169,18 +168,18 @@ async function excluirFilme(id) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
     try {
-        let validarID = buscarFilmeId(id)
-
+        let validarID = await buscarFilmeId(id)
         if (validarID.status_code == 200) {
+            
             // Processamento
             // Chama a função para deletar um filme no BD
             let resultfilme = await filmeDAO.setDeleteMovie(id)
-            console.log(resultfilme)
+
             if (resultfilme) {
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_DELETE_ITEM.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_DELETE_ITEM.status_code
                 MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_DELETE_ITEM.message
-                return MESSAGES.DEFAULT_HEADER // 201
+                return MESSAGES.DEFAULT_HEADER // 204
             } else {
                 return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
             }
@@ -189,6 +188,7 @@ async function excluirFilme(id) {
         }
 
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }

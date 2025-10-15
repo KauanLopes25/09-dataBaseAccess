@@ -88,8 +88,16 @@ app.put('/v1/locadora/filme/:id', cors(), bodyParserJSON, async function (reques
     response.json(filme)
     console.log('ENDPOINT 4° - Requisitado')
 })
-
-
+// 5°
+app.delete('/v1/locadora/filme/:id', cors(), async function (request, response){
+    // Recebe o ID encaminhado via parametro na requisição
+    let idFilme = request.params.id
+    // Chama a função de buscar filme por ID
+    let filme = await controllerFilme.excluirFilme(idFilme)
+    response.status(filme.status_code)
+    response.json(filme)
+    console.log('ENDPOINT 5° - Requisitado')
+})
 // Mensagem de operação da API
 app.listen(PORT, function(){
     console.log('API aguardando requisições...')
