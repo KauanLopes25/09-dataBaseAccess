@@ -106,14 +106,14 @@ async function setInsertMovie(filme) {
                 '${filme.capa}'
         );`
         let result = await prisma.$executeRawUnsafe(sql)
-        if(result){
-            
+        if (result) {
+
             return true
         } else {
-            
+
             return false
         }
-        
+
     } catch (error) {
         return false
     }
@@ -121,9 +121,29 @@ async function setInsertMovie(filme) {
 
 // Altera um filme pelo ID no banco de dados
 async function setUpdateMovie(id) {
+    try {
+        let sql = ` UPDATE tbl_filme
+                    SET nome = '${filme.nome}', 
+                    sinopse = '${filme.sinopse}', 
+                    data_lancamento = ${filme.data_lancamento},
+                    orcamento = '${filme.orcamento}',
+                    trailer = '${filme.trailer}',
+                    capa = '${filme.capa}'
+                    WHERE filme_id = ${id};`
 
+        let result = await prisma.$executeRawUnsafe(sql)
+        if (result) {
+
+            return true
+        } else {
+
+            return false
+        }
+
+    } catch (error) {
+        return false
+    }
 }
-
 // Excluir um filme pelo ID no banco de dados
 async function setDeleteMovie(id) {
 
@@ -132,5 +152,6 @@ async function setDeleteMovie(id) {
 module.exports = {
     getSelectAllMovies,
     getSelectByIdMovie,
-    setInsertMovie
+    setInsertMovie,
+    setUpdateMovie
 }
