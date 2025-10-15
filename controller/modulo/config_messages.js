@@ -21,7 +21,7 @@ const DEFAULT_HEADER = {
     status: Boolean,
     status_code: Number,
     date_request: data_atual.toString(),
-    itens: {}
+    items: {}
 
 }
 
@@ -37,6 +37,11 @@ const SUCCESS_CREATED_ITEM = {
     status: true,
     status_code: 201,
     message: 'Item criado com sucesso!'
+}
+const SUCCESS_UPDATED_ITEM = {
+    status: true,
+    status_code: 200,
+    message: 'Item atualizado com sucesso!'
 }
 
 /************************************ MENSAGENS DE ERRO **************************************/
@@ -72,6 +77,7 @@ module.exports = {
     DEFAULT_HEADER,
     SUCCESS_REQUEST,
     SUCCESS_CREATED_ITEM,
+    SUCCESS_UPDATED_ITEM,
     ERROR_NOT_FOUND,
     ERROR_INTERNAL_SERVER_CONTROLLER,
     ERROR_INTERNAL_SERVER_MODEL,

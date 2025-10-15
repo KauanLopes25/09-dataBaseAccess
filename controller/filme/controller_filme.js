@@ -35,7 +35,7 @@ async function listarFilme() {
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                 MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.message
-                MESSAGES.DEFAULT_HEADER.itens.filmes = resultFilmes
+                MESSAGES.DEFAULT_HEADER.items.filmes = resultFilmes
 
                 return MESSAGES.DEFAULT_HEADER // 200
             } else {
@@ -63,7 +63,7 @@ async function buscarFilmeId(id) {
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                     MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.MESSAGES
-                    MESSAGES.DEFAULT_HEADER.itens.filme = resultFilmes
+                    MESSAGES.DEFAULT_HEADER.items.filme = resultFilmes
 
                     return MESSAGES.DEFAULT_HEADER // 200
 
@@ -75,6 +75,7 @@ async function buscarFilmeId(id) {
                 return MESSAGES.ERROR_INTERNAL_SERVER_MODEL //500
             }
         } else {
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += '[ID inválido]'
             return MESSAGES.ERROR_REQUIRED_FIELDS // 400
         }
 
@@ -87,19 +88,20 @@ async function inserirFilme(filme, contentType) {
     // Criando copia do objeto mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
+        // Validação do tipo de conteúdo da requisição (Obrigatório ser um JSON)
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
-            let validar = await validarDadosFilme()
+            let validar = await validarDadosFilme(filme)
 
             if (!validar) {
                 // Processamento
-                // Chama a função para inserir um novo filme no BD
+                // Chama a função para update um novo filme no BD
                 let resultfilme = await filmeDAO.setInsertMovie(filme)
 
                 if (resultfilme) {
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
                     MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message
-                    MESSAGES.DEFAULT_HEADER.itens = null
+                    delete MESSAGES.DEFAULT_HEADER.items
                     return MESSAGES.DEFAULT_HEADER // 201
                 } else {
                     return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
@@ -112,14 +114,54 @@ async function inserirFilme(filme, contentType) {
             return MESSAGES.ERROR_CONTENT_TYPE // 415
         }
     } catch (error) {
-        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 
 }
 // Atualizar um filme buscando pelo ID
-async function atualizarFilme(filme, id) {
+async function atualizarFilme(id, filme, contentType) {
+    // Criando copia do objeto mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
 
+    try {
+        // Validação do tipo de conteúdo da requisição (Obrigatório ser um JSON)
+        if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+            // Validação do ID válido
+            let validar = await validarDadosFilme(filme)
+
+            if (!validar) {
+
+                // Validação do ID, se existe no BD
+                let validarID = await buscarFilmeId(id)
+
+                if (validarID.status_code == 200) {
+                    filme.id = Number(id)
+
+                    // Processamento
+                    // Chama a função para atualizar um filme no BD
+                    let resultfilme = await filmeDAO.setUpdateMovieMovie(filme)
+
+                    if (resultfilme) {
+                        MESSAGES.DEFAULT_HEADER.status           =  MESSAGES.SUCCESS_UPDATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code      =  MESSAGES.SUCCESS_UPDATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message          =  MESSAGES.SUCCESS_UPDATED_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.items.filme      =  filme
+                        return MESSAGES.DEFAULT_HEADER // 201
+                    } else {
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+                    }
+                } else {
+                    return validarID // A função buscarFilmeID poderá retornar (400 ou 404 ou 500)
+                }
+            } else {
+                return validar // 400
+            }
+        } else {
+            return MESSAGES.ERROR_REQUIRED_FIELDS // 415
+        }
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
+    }
 }
 // Exclui um filme pelo ID
 async function excluirFilme(id) { }

@@ -120,7 +120,7 @@ async function setInsertMovie(filme) {
 }
 
 // Altera um filme pelo ID no banco de dados
-async function setUpdateMovie(id) {
+async function setUpdateMovie(filme) {
     try {
         let sql = ` UPDATE tbl_filme
                     SET nome = '${filme.nome}', 
@@ -129,7 +129,7 @@ async function setUpdateMovie(id) {
                     orcamento = '${filme.orcamento}',
                     trailer = '${filme.trailer}',
                     capa = '${filme.capa}'
-                    WHERE filme_id = ${id};`
+                    WHERE filme_id = ${filme.id};`
 
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
