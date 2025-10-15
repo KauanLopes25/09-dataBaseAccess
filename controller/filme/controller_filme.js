@@ -209,5 +209,6 @@ async function validarDadosFilme(filme, contentType) {
 module.exports = {
     listarFilme,
     buscarFilmeId,
-    inserirFilme
+    inserirFilme,
+    atualizarFilme
 }
