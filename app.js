@@ -50,6 +50,7 @@ app.get('/v1/locadora/filme', cors(), async function (request, response){
     let filme = await controllerFilme.listarFilme()
     response.status(filme.status_code)
     response.json(filme)
+    console.log('ENDPOINT 1° - Requisitado')
 })
 // 2°
 app.get('/v1/locadora/filme/:id', cors(), async function (request, response){
@@ -59,6 +60,7 @@ app.get('/v1/locadora/filme/:id', cors(), async function (request, response){
     let filme = await controllerFilme.buscarFilmeId(idFilme)
     response.status(filme.status_code)
     response.json(filme)
+    console.log('ENDPOINT 2° - Requisitado')
 })
 // 3°
 app.post('/v1/locadora/filme/', cors(), bodyParserJSON, async function (request, response){
@@ -70,6 +72,7 @@ app.post('/v1/locadora/filme/', cors(), bodyParserJSON, async function (request,
     
     response.status(filme.status_code)
     response.json(filme)
+    console.log('ENDPOINT 3° - Requisitado')
 })
 
 

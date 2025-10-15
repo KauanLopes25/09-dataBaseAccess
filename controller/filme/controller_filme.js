@@ -88,36 +88,9 @@ async function inserirFilme(filme, contentType) {
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
     try {
         if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
-            // Validações de todas as entradas de dados
-            if (filme.nome == '' || filme.nome == undefined || filme.nome == null || filme.nome.length > 100) {
-                MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Nome incorreto]'
-                return MESSAGES.ERROR_REQUIRED_FIELDS
-            }
-            else if (filme.sinopse == undefined) {
-                MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Sinopse incorreta]'
-                return MESSAGES.ERROR_REQUIRED_FIELDS
-            }
-            else if (filme.data_lancamento == undefined || filme.data_lancamento.length != 10) {
-                MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Data de lançamento incorreta]'
-                return MESSAGES.ERROR_REQUIRED_FIELDS
-            }
-            else if (filme.duracao == '' || filme.duracao == undefined || filme.duracao == null || filme.length > 8) {
-                MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Duração incorreta]'
-                return MESSAGES.ERROR_REQUIRED_FIELDS
-            }
-            else if (filme.orcamento == '' || filme.orcamento == undefined || filme.orcamento == null || filme.orcamento.length > 12) {
-                MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Orçamento incorreto]'
-                return MESSAGES.ERROR_REQUIRED_FIELDS
-            }
-            else if (filme.trailer == undefined || filme.trailer.length > 200) {
-                MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Trailer incorreto]'
-                return MESSAGES.ERROR_REQUIRED_FIELDS
-            }
-            else if (filme.capa == undefined || filme.capa == null || filme.capa.length > 200) {
-                MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Capa incorreta]'
-                return MESSAGES.ERROR_REQUIRED_FIELDS
-            }
-            else {
+            let validar = await validarDadosFilme()
+
+            if (!validar) {
                 // Processamento
                 // Chama a função para inserir um novo filme no BD
                 let resultfilme = await filmeDAO.setInsertMovie(filme)
@@ -127,12 +100,14 @@ async function inserirFilme(filme, contentType) {
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
                     MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message
                     MESSAGES.DEFAULT_HEADER.itens = null
-
                     return MESSAGES.DEFAULT_HEADER // 201
                 } else {
                     return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                 }
+            } else {
+                return validar // 400
             }
+
         } else {
             return MESSAGES.ERROR_CONTENT_TYPE // 415
         }
@@ -143,10 +118,50 @@ async function inserirFilme(filme, contentType) {
 
 }
 // Atualizar um filme buscando pelo ID
-async function atualizarFilme(filme, id) { }
-// Exclui um filme pelo ID
-async function excluirFilme(id) {
+async function atualizarFilme(filme, id) {
 
+}
+// Exclui um filme pelo ID
+async function excluirFilme(id) { }
+
+async function validarDadosFilme(filme, contentType) {
+    // Criando copia do objeto mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES))
+
+    if (String(contentType).toUpperCase() == 'APPLICATION/JSON') {
+        // Validações de todas as entradas de dados
+        if (filme.nome == '' || filme.nome == undefined || filme.nome == null || filme.nome.length > 100) {
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Nome incorreto]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
+        }
+        else if (filme.sinopse == undefined) {
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Sinopse incorreta]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
+        }
+        else if (filme.data_lancamento == undefined || filme.data_lancamento.length != 10) {
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Data de lançamento incorreta]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
+        }
+        else if (filme.duracao == '' || filme.duracao == undefined || filme.duracao == null || filme.length > 8) {
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Duração incorreta]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
+        }
+        else if (filme.orcamento == '' || filme.orcamento == undefined || filme.orcamento == null || filme.orcamento.length > 12) {
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Orçamento incorreto]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
+        }
+        else if (filme.trailer == undefined || filme.trailer.length > 200) {
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Trailer incorreto]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
+        }
+        else if (filme.capa == undefined || filme.capa == null || filme.capa.length > 200) {
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += '[Capa incorreta]'
+            return MESSAGES.ERROR_REQUIRED_FIELDS
+        }
+        else {
+            return false
+        }
+    }
 }
 
 module.exports = {
