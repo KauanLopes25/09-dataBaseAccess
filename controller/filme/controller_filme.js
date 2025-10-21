@@ -98,11 +98,17 @@ async function inserirFilme(filme, contentType) {
                 let resultfilme = await filmeDAO.setInsertMovie(filme)
 
                 if (resultfilme) {
-                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status
-                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
-                    MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message
-                    delete MESSAGES.DEFAULT_HEADER.items
-                    return MESSAGES.DEFAULT_HEADER // 201
+                    let lastId = await filmeDAO.getSelectLastId()
+                    if (lastId) {
+                        filme.id = lastId
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
+                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message
+                        MESSAGES.DEFAULT_HEADER.items = filme
+                        return MESSAGES.DEFAULT_HEADER // 201
+                    } else {
+                        return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
+                    }
                 } else {
                     return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                 }
@@ -170,7 +176,7 @@ async function excluirFilme(id) {
     try {
         let validarID = await buscarFilmeId(id)
         if (validarID.status_code == 200) {
-            
+
             // Processamento
             // Chama a função para deletar um filme no BD
             let resultfilme = await filmeDAO.setDeleteMovie(id)
@@ -179,6 +185,7 @@ async function excluirFilme(id) {
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_DELETE_ITEM.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_DELETE_ITEM.status_code
                 MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_DELETE_ITEM.message
+                delete MESSAGES.DEFAULT_HEADER.items
                 return MESSAGES.DEFAULT_HEADER // 204
             } else {
                 return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500

@@ -89,7 +89,26 @@ async function getSelectByIdMovie(id) {
         return false
     }
 }
+// Retorna o ultimo id do banco de dados
+async function getSelectLastId() {
+    try {
+        // Variavel com o comando sql para retornar o ultimo id do banco de dados
+        let sql = 'select filme_id from tbl_filme order by filme_id desc limit 1'
+        // Variavel para inserir o comando no banco de dados
+        let result = await prisma.$queryRawUnsafe(sql)
+        console.log(result)
+        if (Array.isArray(result))
+            return Number(result[0].filme_id)
 
+        else
+            return false
+
+
+    } catch (error) {
+        console.log(error)
+        return false
+    }  
+}
 // Insere um filme novo no banco de dados
 async function setInsertMovie(filme) {
     try {
@@ -167,6 +186,7 @@ async function setDeleteMovie(id) {
 module.exports = {
     getSelectAllMovies,
     getSelectByIdMovie,
+    getSelectLastId,
     setInsertMovie,
     setUpdateMovie,
     setDeleteMovie
