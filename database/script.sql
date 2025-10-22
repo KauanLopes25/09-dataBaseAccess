@@ -15,7 +15,7 @@ create table tbl_filme (
 -- Criação da tabela genero cinematográfico
 create table tbl_genero_cinematografico (
   id_genero_cinematografico int primary key auto_increment not null,
-  nome varchar(30), not null
+  nome varchar(30) not null
 );
 
 -- INSERINDO DADOS
