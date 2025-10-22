@@ -22,16 +22,8 @@
 const express = require('express')
 // Responsável pelas permissões da API (APP)
 const cors = require('cors')
-// Responsável por gerenciar a chegada dos dados da api com o front
-const bodyParser = require('body-parser')
-// Import da controller
-const controllerFilme = require('./controller/filme/controller_filme.js')
 // Import das rotas
 const filmeRoutes = require('./controller/filme/router_filme.js')
-
-// Criando um objeto especialista no formato JSON para receber dados via POST e PUT
-const bodyParserJSON = bodyParser.json()
-
 // Retorna a porta do servidor local ou colocamos uma porta local
 const PORT = process.PORT || 8080
 // Criando uma instancia de uma classe do express
