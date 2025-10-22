@@ -1,5 +1,6 @@
 -- Script SQL de criação do banco de dados
 
+-- Criação da tabela Filme
 create table tbl_filme (
 	filme_id int primary key auto_increment not null,
 	nome varchar(100) not null,
@@ -11,6 +12,12 @@ create table tbl_filme (
 	capa varchar(200) not null
 	
 );
+-- Criação da tabela genero cinematográfico
+create table tbl_genero_cinematografico (
+  id_genero int primary key auto_increment not null,
+  nome varchar(30), not null
+);
+
 -- INSERINDO DADOS
 -- Hobbit 1
 insert into tbl_filme 
