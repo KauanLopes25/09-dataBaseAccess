@@ -1,7 +1,7 @@
 'use strict'
 
 /********************************************************************************************
-* Objetivo: Arquivo principal da API para acesso.
+* Objetivo: Arquivo principal da API para acesso ao banco de dados de uma locadora de filme.
 * Autor: Kauan Lopes Pereira
 * Data: 01/10/2025
 * Versão: 1.0.10.25
@@ -24,8 +24,10 @@ const express = require('express')
 const cors = require('cors')
 // Responsável por gerenciar a chegada dos dados da api com o front
 const bodyParser = require('body-parser')
-// Import das controllers
+// Import da controller
 const controllerFilme = require('./controller/filme/controller_filme.js')
+// Import das rotas
+const filmeRoutes = require('./controller/filme/router_filme.js')
 
 // Criando um objeto especialista no formato JSON para receber dados via POST e PUT
 const bodyParserJSON = bodyParser.json()
@@ -43,11 +45,18 @@ app.use((request, response, next)=>{
     app.use(cors()) // Carrega as configurações no Cors da API
     next() // Próximo, carregar os proximos endpoints
 })
+// Mensagem de operação da API
+app.listen(PORT, function(){
+    console.log('API aguardando requisições...')
+})
+
 // ENDPOINT's
+app.use('/v1/locadora/filme/', filmeRoutes)
+/*
 // 1°
-app.get('/v1/locadora/filme', cors(), async function (request, response){
+app.get('/v1/locadora/filme/', cors(), async function (request, response){
     // Chama a função para listar os filmes do BD
-    let filme = await controllerFilme.listarFilme()
+    let filme = await filmeController.listarFilme()
     response.status(filme.status_code)
     response.json(filme)
     console.log('ENDPOINT 1° - Requisitado')
@@ -98,7 +107,4 @@ app.delete('/v1/locadora/filme/:id', cors(), async function (request, response){
     response.json(filme)
     console.log('ENDPOINT 5° - Requisitado')
 })
-// Mensagem de operação da API
-app.listen(PORT, function(){
-    console.log('API aguardando requisições...')
-})
+    */
