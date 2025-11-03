@@ -10,7 +10,7 @@ USE db_locadora_filme_ds2m_25_2;
 -- Criação da tabela genero cinematográfico
 CREATE TABLE tbl_faixa_etaria (
   id_faixa_etaria INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
-  faixa DECIMAL(2,0) NOT NULL,
+  faixa VARCHAR(3) NOT NULL,
   descricao VARCHAR(100) NULL
 );
 
