@@ -55,7 +55,7 @@ const prisma = new PrismaClient()
 async function getSelectAllMovies() {
     try {
         // Variavel com o comando sql para buscar toda a tabela de filme
-        let sql = `select * from tbl_filme order by filme_id desc`
+        let sql = `select * from tbl_filme order by id_filme desc`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result))
@@ -75,7 +75,7 @@ async function getSelectAllMovies() {
 async function getSelectByIdMovie(id) {
     try {
         // Variavel com o comando sql para buscar toda a tabela de filme
-        let sql = `select * from tbl_filme where filme_id = ${id}`
+        let sql = `select * from tbl_filme where id_filme = ${id}`
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
         if (Array.isArray(result))
@@ -93,7 +93,7 @@ async function getSelectByIdMovie(id) {
 async function getSelectLastId() {
     try {
         // Variavel com o comando sql para retornar o ultimo id do banco de dados
-        let sql = 'select filme_id from tbl_filme order by filme_id desc limit 1'
+        let sql = 'select id_filme from tbl_filme order by id_filme desc limit 1'
         // Variavel para inserir o comando no banco de dados
         let result = await prisma.$queryRawUnsafe(sql)
         console.log(result)
@@ -149,7 +149,7 @@ async function setUpdateMovie(filme) {
                     orcamento = '${filme.orcamento}',
                     trailer = '${filme.trailer}',
                     capa = '${filme.capa}'
-                    WHERE filme_id = ${filme.id};`
+                    WHERE id_filme = ${filme.id};`
 
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
@@ -168,7 +168,7 @@ async function setUpdateMovie(filme) {
 async function setDeleteMovie(id) {
     try {
         let sql = `DELETE FROM tbl_filme
-                    WHERE filme_id = ${id};`
+                    WHERE id_filme = ${id};`
 
         let result = await prisma.$executeRawUnsafe(sql)
         if (result) {
