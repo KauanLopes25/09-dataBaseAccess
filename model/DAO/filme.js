@@ -114,7 +114,7 @@ async function setInsertMovie(filme) {
     try {
         let sql = `
         insert into tbl_filme 
-        (nome, sinopse, data_lancamento, duracao, orcamento, trailer, capa, id_fiaxa_etaria)
+        (nome, sinopse, data_lancamento, duracao, orcamento, trailer, capa, id_faixa_etaria)
         values (
                 '${filme.nome}',
                 '${filme.sinopse}',
