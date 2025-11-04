@@ -100,3 +100,40 @@ CREATE TABLE tbl_colaborador (
   CONSTRAINT fk_nacionalidade FOREIGN KEY(id_nacionalidade) REFERENCES tbl_nacionalidade(id_nacionalidade),
   CONSTRAINT fk_colaborador_nacionalidade FOREIGN KEY(id_colaborador) REFERENCES tbl_colaborador(id_colaborador)
  );
+
+
+----------------------------------------- INSERINDO DADOS ------------------------------------------- 
+-- Insert na tabela faixa etaria
+INSERT INTO tbl_faixa_etaria (faixa, descricao) VALUES
+('L',  'Livre para todos os públicos'),
+('10', 'Não recomendado para menores de 10 anos'),
+('12', 'Não recomendado para menores de 12 anos'),
+('14', 'Não recomendado para menores de 14 anos'),
+('16', 'Não recomendado para menores de 16 anos'),
+('18', 'Não recomendado para menores de 18 anos');
+
+-- Insert na tabela genero cinematografico
+INSERT INTO tbl_genero_cinematografico (nome) VALUES
+('Ação'),
+('Aventura'),
+('Comédia'),
+('Drama'),
+('Terror'),
+('Ficção Científica'),
+('Romance'),
+('Animação'),
+('Documentário'),
+('Suspense'),
+('Fantasia'),
+('Musical'),
+('Guerra'),
+('Mistério'),
+('Policial');
+
+-- Insert na tabela genero biologico
+INSERT INTO tbl_genero_biologico (nome) VALUES
+('Masculino'),
+('Feminino'),
+('Não Binário'),
+('Prefere não informar'),
+('Outro');
