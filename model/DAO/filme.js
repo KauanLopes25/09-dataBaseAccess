@@ -98,7 +98,7 @@ async function getSelectLastId() {
         let result = await prisma.$queryRawUnsafe(sql)
         console.log(result)
         if (Array.isArray(result))
-            return Number(result[0].filme_id)
+            return Number(result[0].id_filme)
 
         else
             return false
