@@ -26,6 +26,7 @@ const cors = require('cors')
 const filmeRoutes = require('./controller/filme/router_filme.js')
 const generoCinematograficoRoutes = require('./controller/genero_cinematografico/router_genero_cinematografico.js')
 const faixaEtariaRoutes = require('./controller/faixa_etaria/router_faixa_etaria.js')
+const colaboradorRoutes = require('./controller/colaborador/router_colaborador.js')
 // Retorna a porta do servidor local ou colocamos uma porta local
 const PORT = process.PORT || 8080
 // Criando uma instancia de uma classe do express
@@ -48,3 +49,4 @@ app.listen(PORT, function(){
 app.use('/v1/locadora/filme/', filmeRoutes)
 app.use('/v1/locadora/generoCinematografico/', generoCinematograficoRoutes)
 app.use('/v1/locadora/faixaEtaria/', faixaEtariaRoutes)
+app.use('/v1/locadora/colaborador/', colaboradorRoutes)

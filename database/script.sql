@@ -137,3 +137,16 @@ INSERT INTO tbl_genero_biologico (nome) VALUES
 ('Não Binário'),
 ('Prefere não informar'),
 ('Outro');
+
+-- Insert na tabela colaborador
+INSERT INTO tbl_colaborador (nome, data_nascimento, foto, biografia, id_genero_biologico) VALUES
+('Lucas Andrade', '1985-07-12', 'fotos/lucas_andrade.jpg', 'Ator brasileiro conhecido por papéis em filmes de ação e aventura.', 1),
+('Mariana Costa', '1990-03-22', 'fotos/mariana_costa.jpg', 'Atriz premiada por atuações em dramas e comédias românticas.', 2),
+('Rafael Torres', '1978-11-02', 'fotos/rafael_torres.jpg', 'Ator versátil com carreira internacional em produções de suspense.', 1),
+('Camila Duarte', '1988-05-16', 'fotos/camila_duarte.jpg', 'Atriz reconhecida por papéis em filmes independentes e fantasia.', 2),
+('Henrique Lopes', '1992-01-09', 'fotos/henrique_lopes.jpg', 'Ator jovem destaque em produções de ficção científica.', 1),
+('João Menezes', '1970-09-30', 'fotos/joao_menezes.jpg', 'Diretor renomado, especializado em filmes de ação e suspense.', 1),
+('Ana Ribeiro', '1982-04-14', 'fotos/ana_ribeiro.jpg', 'Diretora premiada por produções de drama e documentário.', 2),
+('Ricardo Freitas', '1975-02-18', 'fotos/ricardo_freitas.jpg', 'Cineasta com destaque em produções de ficção científica.', 1),
+('Beatriz Nogueira', '1986-12-25', 'fotos/beatriz_nogueira.jpg', 'Diretora reconhecida por filmes de fantasia e aventura.', 2),
+('Felipe Martins', '1968-06-10', 'fotos/felipe_martins.jpg', 'Diretor experiente, com carreira em thrillers e dramas sociais.', 1);
