@@ -22,6 +22,7 @@ requisições e respostas para a tabela Filme.
 // Importação do arquivo model da tbl_filme
 const filmeDAO = require('../../model/DAO/filme.js')
 const DEFAULT_MESSAGES = require('../modulo/config_messages.js')
+const controllerFilmeGenero = require("./controller_filme_genero.js")
 // Mostra todos os filmes do banco
 async function listarFilme() {
     // Criando copia do objeto mensagens
@@ -100,29 +101,45 @@ async function inserirFilme(filme, contentType) {
                 if (resultfilme) {
                     let lastId = await filmeDAO.getSelectLastId()
                     if (lastId) {
-                        filme.id = lastId
-                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status
-                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code
-                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message
-                        MESSAGES.DEFAULT_HEADER.items = filme
-                        return MESSAGES.DEFAULT_HEADER // 201
+                        //500
+                    // Ainda acho que poderia ter uma tratativa melhor para isso
+                    //
+                    // - Se caiu nesse cenário o insert funcionou, ele só não conseguiu
+                    //   retornar o id para o usuário, tinha que ser uma mensagem diferente
+                    //   Ou... Deletar o ultimo registro para o usuário cadastrar de novo?
+
+                    // Processar a inserção dos dados na tabela de relação entre filme e genero
+                    filme.genero.forEach(async function (genero) {
+                        let filmeGenero = { id_filme: lastId, id_genero_cinematografico: genero.id_genero_cinematografico }
+
+                        let resultsFilmeGenero = await controllerFilmeGenero.inserirFilmeGenero(filmeGenero, contentType)
+                    });
+
+                    // Adicionando o id do filme no JSON
+                    filme.id = lastId
+                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status;
+                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code;
+                    MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message;
+                    MESSAGES.DEFAULT_HEADER.items = filme
+                    return MESSAGES.DEFAULT_HEADER //201
+                        
                     } else {
                         return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                     }
                 } else {
                     return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                 }
+
             } else {
                 return validar // 400
             }
-
         } else {
-            return MESSAGES.ERROR_CONTENT_TYPE // 415
+            return MESSAGES.ERROR_CONTENT_TYPE //415
         }
+        
     } catch (error) {
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
-
 }
 // Atualizar um filme buscando pelo ID
 async function atualizarFilme(filme, contentType, id) {
