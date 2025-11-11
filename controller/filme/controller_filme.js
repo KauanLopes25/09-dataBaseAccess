@@ -1,5 +1,3 @@
-'use strict'
-
 /********************************************************************************************
 * Objetivo: Arquivo responsavel pela manipulação de dados entre o APP e a Model
 requisições e respostas para a tabela Filme.
@@ -102,27 +100,42 @@ async function inserirFilme(filme, contentType) {
                     let lastId = await filmeDAO.getSelectLastId()
                     if (lastId) {
                         //500
-                    // Ainda acho que poderia ter uma tratativa melhor para isso
-                    //
-                    // - Se caiu nesse cenário o insert funcionou, ele só não conseguiu
-                    //   retornar o id para o usuário, tinha que ser uma mensagem diferente
-                    //   Ou... Deletar o ultimo registro para o usuário cadastrar de novo?
+                        // Ainda acho que poderia ter uma tratativa melhor para isso
+                        //
+                        // - Se caiu nesse cenário o insert funcionou, ele só não conseguiu
+                        //   retornar o id para o usuário, tinha que ser uma mensagem diferente
+                        //   Ou... Deletar o ultimo registro para o usuário cadastrar de novo?
 
-                    // Processar a inserção dos dados na tabela de relação entre filme e genero
-                    filme.genero.forEach(async function (genero) {
-                        let filmeGenero = { id_filme: lastId, id_genero_cinematografico: genero.id_genero_cinematografico }
+                        // Processar a inserção dos dados na tabela de relação entre filme e genero
+                        console.log(filme.genero)
+                        for(genero of filme.genero){
+                        // filme.genero.forEach(async function (genero) {
+                            let filmeGenero = { id_filme: lastId, id_genero_cinematografico: genero.id_genero_cinematografico }
 
-                        let resultsFilmeGenero = await controllerFilmeGenero.inserirFilmeGenero(filmeGenero, contentType)
-                    });
+                            let resultsFilmeGenero = await controllerFilmeGenero.inserirFilmeGenero(filmeGenero, contentType)
 
-                    // Adicionando o id do filme no JSON
-                    filme.id = lastId
-                    MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status;
-                    MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code;
-                    MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message;
-                    MESSAGES.DEFAULT_HEADER.items = filme
-                    return MESSAGES.DEFAULT_HEADER //201
-                        
+                            if (resultsFilmeGenero.status_code != 201) {
+                                return MESSAGES.ERROR_RELATIONAL_INSERTION // 500 Problema com a tabela relacional
+                            }
+                        }
+
+                        // Adicionando o id do filme no JSON
+                        filme.id = lastId
+                        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_CREATED_ITEM.status;
+                        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_CREATED_ITEM.status_code;
+                        MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_CREATED_ITEM.message;
+
+                        // Apaga o atributo genero apenas com os ids que foram enviados no post
+                        delete filme.genero
+
+                        // Pesquisa no BD 
+                        let resultDadosGeneros = await controllerFilmeGenero.listarGenerosIdFilme(lastId)
+                        // Cria novamente o atributo genero e coloca o resultado do BD com os generos
+                        filme.genero = resultDadosGeneros
+
+                        MESSAGES.DEFAULT_HEADER.items = filme
+                        return MESSAGES.DEFAULT_HEADER //201
+
                     } else {
                         return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
                     }
@@ -136,8 +149,9 @@ async function inserirFilme(filme, contentType) {
         } else {
             return MESSAGES.ERROR_CONTENT_TYPE //415
         }
-        
+
     } catch (error) {
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
