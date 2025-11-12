@@ -31,6 +31,17 @@ async function listarFilme() {
         let resultFilmes = await filmeDAO.getSelectAllMovies()
         if (resultFilmes) {
             if (resultFilmes.length > 0) {
+
+                //Processamento para adicionar generos aos filmes
+
+                for(filme of resultFilmes){
+                    let resultGeneros = await controllerFilmeGenero.listarGenerosIdFilme(filme.id_filme)
+                    if(resultGeneros.status_code == 200){
+                        filme.genero = resultGeneros.items.filme_genero
+                    }
+                    
+                }
+
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                 MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                 MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.message
