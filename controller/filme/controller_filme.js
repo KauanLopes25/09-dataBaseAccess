@@ -34,12 +34,11 @@ async function listarFilme() {
 
                 //Processamento para adicionar generos aos filmes
 
-                for(filme of resultFilmes){
+                for (filme of resultFilmes) {
                     let resultGeneros = await controllerFilmeGenero.listarGenerosIdFilme(filme.id_filme)
-                    if(resultGeneros.status_code == 200){
+                    if (resultGeneros.status_code == 200) {
                         filme.genero = resultGeneros.items.filme_genero
                     }
-                    
                 }
 
                 MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
@@ -70,6 +69,14 @@ async function buscarFilmeId(id) {
 
             if (resultFilmes) {
                 if (resultFilmes.length > 0) {
+                    //Processamento para adicionar generos aos filmes
+
+                    for (filme of resultFilmes) {
+                        let resultGeneros = await controllerFilmeGenero.listarGenerosIdFilme(filme.id_filme)
+                        if (resultGeneros.status_code == 200) {
+                            filme.genero = resultGeneros.items.filme_genero
+                        }
+                    }
                     MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status
                     MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code
                     MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_REQUEST.MESSAGES
@@ -119,8 +126,8 @@ async function inserirFilme(filme, contentType) {
 
                         // Processar a inserção dos dados na tabela de relação entre filme e genero
                         console.log(filme.genero)
-                        for(genero of filme.genero){
-                        // filme.genero.forEach(async function (genero) {
+                        for (genero of filme.genero) {
+                            // filme.genero.forEach(async function (genero) {
                             let filmeGenero = { id_filme: lastId, id_genero_cinematografico: genero.id_genero_cinematografico }
 
                             let resultsFilmeGenero = await controllerFilmeGenero.inserirFilmeGenero(filmeGenero, contentType)
