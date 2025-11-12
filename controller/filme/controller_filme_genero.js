@@ -36,7 +36,7 @@ const listarFilmesGeneros = async function () {
     }
 }
 
-// Retorna um registro de filme x genero correspondente ao id inserido
+// Retorna um registro de filme x genero correspondente ao id da tabela relacional inserido
 const buscarFilmeGeneroId = async function (id) {
     //Criando um novo objeto para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES));
@@ -50,6 +50,43 @@ const buscarFilmeGeneroId = async function (id) {
         //Executando busca por id
         let resultFilmesGeneros = await filmeGeneroDAO.getSelectByIdMovieGenres(Number(id));
 
+        //--------------Verificações da busca-----------//
+        //Caso houve um erro na execução do model
+        if (!resultFilmesGeneros) {
+            return MESSAGES.ERROR_INTERNAL_SERVER_MODEL                         //500
+        }
+
+        //Caso não exista um item com id correspondente ao inserido
+        if (resultFilmesGeneros <= 0) {
+            return MESSAGES.ERROR_NOT_FOUND;                                    //404
+        }
+
+        //---------------------------------------------//
+
+        //Montagem do Message
+        MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_REQUEST.status;
+        MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_REQUEST.status_code;
+        MESSAGES.DEFAULT_HEADER.items.filme_genero = resultFilmesGeneros;
+
+        return MESSAGES.DEFAULT_HEADER                                          //200
+
+    } catch (error) {
+        return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER;                       //500
+    }
+}
+// Retorna um registro de filme x genero correspondente ao id_filme inserido
+const buscarGenerobyFilmeId = async function (id) {
+    //Criando um novo objeto para as mensagens
+    let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES));
+    try {
+        //Válidação de chegada do ID, barrando NaNs e campos vazios
+        if (isNaN(id) || id == '' || id == null || id == undefined || id <= 0) {
+            MESSAGES.ERROR_REQUIRED_FIELDS.message += 'Id inválido';
+            return MESSAGES.ERROR_REQUIRED_FIELDS;                              //400   
+        }
+
+        //Executando busca por id
+        let resultFilmesGeneros = await filmeGeneroDAO.getSelectGenresByIdMovies(Number(id));
         //--------------Verificações da busca-----------//
         //Caso houve um erro na execução do model
         if (!resultFilmesGeneros) {
@@ -244,24 +281,31 @@ const atualizarFilmeGenero = async function (filmeGenero, id, contentType) {
 
 }
 
-// Exclui o registro de um relacionamento correspondente ao id
-const excluirFilmeGenero = async function (id) {
+// Exclui o registro de um relacionamento correspondente ao id_filme
+const excluirFilmeGenero = async function (id_filme) {
     //Criando um novo objeto para as mensagens
     let MESSAGES = JSON.parse(JSON.stringify(DEFAULT_MESSAGES));
     try {
         //Verificando existencia do filmexGenero
-        let validarId = await buscarFilmeGeneroId(id);
+        let validarId = await buscarGenerobyFilmeId(id_filme);
 
         //Caso houve um erro na execução do model
         if (validarId.status_code != 200) {
             return validarId                                                    // 400 referente a id / 404 / 500 
         }
+        //
+        //
+        // chesck point (Preciso realizar pegar os id's da tabela relacional entre genero e filme e excluir um por um com um loop)
+        //
+        //
 
         let resultFilmesGeneros = await filmeGeneroDAO.setDeleteMoviesGenres(id);
         if (resultFilmesGeneros) {
             MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_DELETED_ITEM.status;
             MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_DELETED_ITEM.status_code;
             MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_DELETED_ITEM.message;
+
+            console.log(MESSAGES.DEFAULT_HEADER)
 
             return MESSAGES.DEFAULT_HEADER                                      //204
         }
@@ -297,6 +341,7 @@ const verificarFalhas = async function (filmeGenero) {
 module.exports = {
     listarFilmesGeneros,
     buscarFilmeGeneroId,
+    buscarGenerobyFilmeId,
     listarGenerosIdFilme,
     listarFilmesIdGenero,
     inserirFilmeGenero,

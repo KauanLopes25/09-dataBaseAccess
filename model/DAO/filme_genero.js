@@ -59,7 +59,7 @@ const getSelectGenresByIdMovies = async function(id_filme){
     try {
         //Script SQL
         let sql = 
-        `SELECT tbl_genero_cinematografico.id_genero_cinematografico, tbl_genero_cinematografico.nome
+        `SELECT tbl_genero_cinematografico_filme.id, tbl_genero_cinematografico.id_genero_cinematografico, tbl_genero_cinematografico.nome
             FROM tbl_filme
                 INNER JOIN tbl_genero_cinematografico_filme
                     ON tbl_filme.id_filme = tbl_genero_cinematografico_filme.id_filme

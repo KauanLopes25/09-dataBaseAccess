@@ -125,7 +125,6 @@ async function inserirFilme(filme, contentType) {
                         //   Ou... Deletar o ultimo registro para o usuário cadastrar de novo?
 
                         // Processar a inserção dos dados na tabela de relação entre filme e genero
-                        console.log(filme.genero)
                         for (genero of filme.genero) {
                             // filme.genero.forEach(async function (genero) {
                             let filmeGenero = { id_filme: lastId, id_genero_cinematografico: genero.id_genero_cinematografico }
@@ -196,10 +195,31 @@ async function atualizarFilme(filme, contentType, id) {
                     // Chama a função para atualizar um filme no BD
                     let resultfilme = await filmeDAO.setUpdateMovie(filme)
                     if (resultfilme) {
+                        // Processar a atualização dos dados na tabela de relação entre filme e genero
+                        let deleteFilmeGenero = await controllerFilmeGenero.excluirFilmeGenero(id)
+                        for (genero of filme.genero) {
+                            // filme.genero.forEach(async function (genero) {
+                            let filmeGenero = { id_filme: id, id_genero_cinematografico: genero.id_genero_cinematografico }
+
+                            let resultsFilmeGenero = await controllerFilmeGenero.inserirFilmeGenero(filmeGenero, contentType)
+                            if (resultsFilmeGenero.status_code != 201) {
+                                return MESSAGES.ERROR_RELATIONAL_INSERTION // 500 Problema com a tabela relacional
+                            }
+                        }
+
                         MESSAGES.DEFAULT_HEADER.status = MESSAGES.SUCCESS_UPDATED_ITEM.status
                         MESSAGES.DEFAULT_HEADER.status_code = MESSAGES.SUCCESS_UPDATED_ITEM.status_code
                         MESSAGES.DEFAULT_HEADER.message = MESSAGES.SUCCESS_UPDATED_ITEM.message
                         MESSAGES.DEFAULT_HEADER.items.filme = filme
+
+                           // Apaga o atributo genero apenas com os ids que foram enviados no post
+                           delete filme.genero
+
+                           // Pesquisa no BD 
+                           let resultDadosGeneros = await controllerFilmeGenero.listarGenerosIdFilme(id)
+                           // Cria novamente o atributo genero e coloca o resultado do BD com os generos
+                           filme.genero = resultDadosGeneros
+
                         return MESSAGES.DEFAULT_HEADER // 201
                     } else {
                         return MESSAGES.ERROR_INTERNAL_SERVER_MODEL // 500
@@ -214,6 +234,8 @@ async function atualizarFilme(filme, contentType, id) {
             return MESSAGES.ERROR_REQUIRED_FIELDS // 415
         }
     } catch (error) {
+        console.log('x')
+        console.log(error)
         return MESSAGES.ERROR_INTERNAL_SERVER_CONTROLLER // 500
     }
 }
